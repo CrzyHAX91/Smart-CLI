@@ -1,10 +1,12 @@
 # Smart-CLI: Advanced AI-Powered Command Line Interface
 
-![Smart-CLI Banner](https://raw.githubusercontent.com/CrzyHAX91/Smart-CLI/main/ai-cli-web/public/logo192.png)
-
 ## 🚀 Overview
 
 Smart-CLI is a powerful, modern command-line interface tool that combines multiple AI services (OpenAI, Llama, and Serper) to provide intelligent responses and search capabilities. It features both a CLI tool and a web interface, making it versatile for different use cases.
+
+## ⚠️ Security Notice
+
+**IMPORTANT**: This project requires API keys for various services. Never commit your actual API keys to the repository. Always use environment variables and keep your `.env` file in `.gitignore`.
 
 ## ✨ Features
 
@@ -58,18 +60,22 @@ npm start
 
 ## 🔧 Configuration
 
-Create a `.env` file in both `ai-cli-tool` and `ai-cli-web` directories with the following variables:
+1. Create a `.env` file in both `ai-cli-tool` and `ai-cli-web` directories
+2. Add your API keys and configurations:
 
 ```env
-# AI Service API Keys
-SERPER_API_KEY=your_serper_api_key
-OPENAI_API_KEY=your_openai_api_key
-REPLICATE_API_TOKEN=your_replicate_token
+# AI Service API Keys (Replace with your actual keys)
+SERPER_API_KEY=YOUR_SERPER_API_KEY
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+REPLICATE_API_TOKEN=YOUR_REPLICATE_TOKEN
 
 # Model Configurations
 OPENAI_MODEL=Meta-Llama/llama-3.3370B-instruct-turbo
 OPENAI_API_BASE_URL=https://api.openai.com/v1
 ```
+
+3. Ensure `.env` is listed in `.gitignore`
+4. Never share or expose your API keys
 
 ## 📚 Usage
 
@@ -114,6 +120,14 @@ The web interface features a modern, aggressive design with:
 - Responsive layout
 - Dark mode optimization
 
+## 🔐 Security Best Practices
+
+1. Never commit `.env` files to version control
+2. Use environment variables for sensitive data
+3. Regularly rotate API keys
+4. Monitor API usage and set rate limits
+5. Implement proper error handling for API failures
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -133,6 +147,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 1. **API Key Issues**
    - Ensure all API keys are correctly set in `.env`
    - Verify API key permissions and quotas
+   - Check for API key expiration
 
 2. **Installation Problems**
    - Clear npm cache: `npm cache clean --force`
