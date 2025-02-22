@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-ai-cli
+  labels:
+    app: smart-ai-cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-ai-cli
+  template:
+    metadata:
+      labels:
+        app: smart-ai-cli
+    spec:
+      containers:
+      - name: smart-ai-cli
+        image: smart-ai-cli:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
