@@ -4,7 +4,7 @@ import { SuggestionsEngine } from '../services/suggestions.js';
 import ora from 'ora';
 import chalk from 'chalk';
 import boxen from 'boxen';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import figlet from 'figlet';
 
 const NEON_COLORS = [
@@ -15,10 +15,22 @@ const NEON_COLORS = [
   '#FF00FF'  // Neon Purple
 ];
 
+function safeChalk(method, ...args) {
+  try {
+    return chalk[method](...args);
+  } catch (error) {
+    return args[0]; // Return the original text if chalk fails
+  }
+}
+
 function rainbow(str) {
   return str.split('').map((char, i) => {
     const color = NEON_COLORS[i % NEON_COLORS.length];
-    return chalk.hex(color)(char);
+    try {
+      return chalk.hex(color)(char);
+    } catch (error) {
+      return char; // Fallback for tests
+    }
   }).join('');
 }
 
@@ -54,10 +66,10 @@ export const askQuestion = async (question, options = {}) => {
     const improvedQuestion = await suggestions.getSmartPrompt(question);
     
     if (improvedQuestion !== question) {
-      spinner.succeed(chalk.greenBright('Question optimized!'));
+      spinner.succeed(safeChalk('green', 'Question optimized!'));
       console.log(
         createNeonBox(
-          `${chalk.dim('Original:')} ${question}\n${chalk.cyan('Optimized:')} ${improvedQuestion}`,
+          `${safeChalk('dim', 'Original:')} ${question}\n${safeChalk('cyan', 'Optimized:')} ${improvedQuestion}`,
           '✨ Question Enhancement'
         )
       );
@@ -73,12 +85,12 @@ export const askQuestion = async (question, options = {}) => {
     });
 
     // Format and display the response
-    spinner.succeed(chalk.greenBright('✨ Response ready!'));
+    spinner.succeed(safeChalk('green', '✨ Response ready!'));
 
     // Display question and response in neon boxes
     console.log(
       createNeonBox(
-        chalk.bold(improvedQuestion),
+        safeChalk('bold', improvedQuestion),
         '🤔 Question'
       )
     );
@@ -101,12 +113,12 @@ export const askQuestion = async (question, options = {}) => {
         const content = `Question: ${improvedQuestion}\n\nResponse:\n${result.response}\n\nGenerated on: ${new Date().toISOString()}`;
         await fs.writeFile(options.save, content, 'utf8');
         console.log(createNeonBox(
-          chalk.greenBright(`Response saved to ${options.save}`),
+          safeChalk('green', `Response saved to ${options.save}`),
           '💾 Saved'
         ));
       } catch (error) {
         console.error(createNeonBox(
-          chalk.redBright(`Error saving to file: ${error.message}`),
+          safeChalk('red', `Error saving to file: ${error.message}`),
           '❌ Error'
         ));
       }
@@ -116,7 +128,7 @@ export const askQuestion = async (question, options = {}) => {
     if (result.searchResults && !options.quick) {
       console.log(
         createNeonBox(
-          chalk.dim(result.searchResults),
+          safeChalk('dim', result.searchResults),
           '🔍 Sources'
         )
       );
@@ -149,17 +161,17 @@ export const askQuestion = async (question, options = {}) => {
     console.log(
       createNeonBox(
         Object.entries(stats)
-          .map(([key, value]) => `${chalk.cyan(key)}: ${value}`)
+          .map(([key, value]) => `${safeChalk('cyan', key)}: ${value}`)
           .join('\n'),
         '📊 Performance Stats'
       )
     );
 
   } catch (error) {
-    spinner.fail(chalk.redBright('Error processing your question'));
+    spinner.fail(safeChalk('red', 'Error processing your question'));
     console.error(
       createNeonBox(
-        chalk.red(error.message),
+        safeChalk('red', error.message),
         '❌ Error'
       )
     );
@@ -168,14 +180,14 @@ export const askQuestion = async (question, options = {}) => {
     if (error.message.includes('API')) {
       console.log(
         createNeonBox(
-          chalk.yellow('Try running "smart-ai configure" to update your API keys.'),
+          safeChalk('yellow', 'Try running "smart-ai configure" to update your API keys.'),
           '💡 Tip'
         )
       );
     } else {
       console.log(
         createNeonBox(
-          chalk.yellow('Try using --quick mode or check your internet connection.'),
+          safeChalk('yellow', 'Try using --quick mode or check your internet connection.'),
           '💡 Tip'
         )
       );

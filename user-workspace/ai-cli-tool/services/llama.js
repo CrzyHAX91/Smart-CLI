@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class LlamaService {
-  constructor() {
-    const apiToken = process.env.REPLICATE_API_TOKEN || process.env.LLAMA_API_KEY;
+  constructor(config = {}) {
+    const apiToken = config.llamaApiKey || process.env.REPLICATE_API_TOKEN || process.env.LLAMA_API_KEY;
     if (!apiToken) {
       throw new Error('Replicate API token is not configured');
     }

@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class SerperService {
-  constructor() {
-    this.apiKey = process.env.SERPER_API_KEY;
+  constructor(config = {}) {
+    this.apiKey = config.serperApiKey || process.env.SERPER_API_KEY;
     this.baseUrl = 'https://google.serper.dev/search';
     
     if (!this.apiKey) {

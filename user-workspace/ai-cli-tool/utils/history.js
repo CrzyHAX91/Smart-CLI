@@ -1,10 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const HISTORY_FILE = path.join(__dirname, '..', '.history.json');
-const CACHE_FILE = path.join(__dirname, '..', '.cache.json');
+// Use process.cwd() instead of import.meta.url for better compatibility
+const projectRoot = process.cwd();
+const HISTORY_FILE = path.join(projectRoot, '.history.json');
+const CACHE_FILE = path.join(projectRoot, '.cache.json');
 
 export class HistoryManager {
   constructor() {

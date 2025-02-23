@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONFIG_FILE = path.join(__dirname, '..', '.env');
+// Use process.cwd() instead of import.meta.url for better compatibility
+const projectRoot = process.cwd();
+const CONFIG_FILE = path.join(projectRoot, '.env');
 
 // Default API keys
 const DEFAULT_SERPER_KEY = 'ada101ab0e19cbd984caf03b69b54e94b54bf20d';

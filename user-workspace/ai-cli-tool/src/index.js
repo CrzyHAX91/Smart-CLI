@@ -34,7 +34,7 @@ const program = new Command();
 program
   .name('smart-ai')
   .description('Advanced AI-powered CLI tool with DevOps capabilities')
-  .version('1.2.0');
+  .version('1.2.2');
 
 // AI Commands
 program

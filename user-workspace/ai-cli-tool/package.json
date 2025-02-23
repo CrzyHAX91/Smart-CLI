@@ -1,24 +1,30 @@
 {
   "name": "smart-ai-cli",
-  "version": "1.2.1",
-  "description": "Advanced AI-powered CLI tool with integrated search and AI capabilities",
-  "main": "src/index.js",
+  "version": "1.2.2",
+  "description": "A smart CLI tool powered by AI",
   "type": "module",
+  "main": "src/index.js",
   "bin": {
     "smart-ai": "./src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest",
+    "test": "NODE_ENV=test jest --config jest.config.cjs",
     "lint": "eslint .",
     "validate": "node scripts/validate-config.js",
     "check-env": "node scripts/check-environment.js",
     "build": "webpack --config webpack.config.js",
-    "serve": "node dist/smart-ai.js",
-    "build-web": "webpack --config webpack.config.js --env.web",
-    "serve-web": "node ai-cli-web/dist/web.bundle.js"
+    "version-sync": "node scripts/version-sync.js"
   },
+  "keywords": [
+    "cli",
+    "ai",
+    "smart",
+    "assistant"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",
@@ -29,38 +35,24 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.0.0",
     "ora": "^7.0.1",
-    "replicate": "^0.20.1",
-    "express": "^4.18.2"
+    "replicate": "^0.16.1",
+    "semver": "^7.5.4",
+    "update-notifier": "^6.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.26.3",
-    "@babel/plugin-transform-runtime": "^7.26.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.22.0",
+    "@babel/plugin-transform-runtime": "^7.22.0",
     "@babel/preset-env": "^7.22.10",
-    "@babel/runtime": "^7.26.9",
-    "babel-jest": "^29.6.3",
+    "@babel/runtime": "^7.22.10",
+    "@jest/globals": "^29.6.2",
+    "babel-jest": "^29.6.2",
     "eslint": "^8.47.0",
-    "jest": "^29.6.3",
+    "jest": "^29.6.2",
+    "jest-environment-node": "^29.6.2",
     "nodemon": "^3.0.1",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "style-loader": "^3.3.1",
-    "css-loader": "^6.7.3",
-    "webpack-node-externals": "^3.0.0"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yourusername/smart-ai-cli.git"
-  },
-  "author": "Your Name",
-  "keywords": [
-    "cli",
-    "ai",
-    "devops",
-    "automation"
-  ]
+    "webpack-cli": "^5.1.4"
+  }
 }

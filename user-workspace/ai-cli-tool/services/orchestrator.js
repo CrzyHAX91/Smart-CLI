@@ -7,10 +7,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class AIOrchestrator {
-  constructor() {
-    this.serper = new SerperService();
-    this.openai = new OpenAIService();
-    this.llama = new LlamaService();
+  constructor(config = {}) {
+    this.serper = new SerperService(config);
+    this.openai = new OpenAIService(config);
+    this.llama = new LlamaService(config);
     this.history = new HistoryManager();
   }
 

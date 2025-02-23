@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export class OpenAIService {
-  constructor() {
-    const apiKey = process.env.OPENAI_API_KEY;
+  constructor(config = {}) {
+    const apiKey = config.openaiApiKey || process.env.OPENAI_API_KEY;
     if (!apiKey) {
       console.warn('OpenAI API key not found in environment variables');
     }
@@ -15,7 +15,7 @@ export class OpenAIService {
       baseURL: process.env.OPENAI_API_BASE_URL || 'https://api.openai.com/v1'
     });
     
-    this.model = process.env.OPENAI_MODEL || 'Meta-Llama/llama-3.3370B-instruct-turbo';
+    this.model = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
   }
 
   async generateResponse(prompt) {

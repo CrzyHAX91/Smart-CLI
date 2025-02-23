@@ -4,9 +4,9 @@ import { OpenAIService } from './openai.js';
 import { LlamaService } from './llama.js';
 
 export class SuggestionsEngine {
-  constructor() {
-    this.openai = new OpenAIService();
-    this.llama = new LlamaService();
+  constructor(config = {}) {
+    this.openai = new OpenAIService(config);
+    this.llama = new LlamaService(config);
     
     this.defaultSuggestions = {
       relatedQuestions: [
@@ -23,6 +23,9 @@ export class SuggestionsEngine {
         'Specify a particular aspect to focus on'
       ]
     };
+
+    // Cache for suggestions
+    this.cache = new Map();
   }
 
   async getSmartPrompt(query) {
@@ -40,6 +43,11 @@ export class SuggestionsEngine {
 
   async getSuggestions(query) {
     try {
+      // Check cache first
+      if (this.cache.has(query)) {
+        return this.cache.get(query);
+      }
+
       // Get command suggestions from Llama
       const llamaSuggestions = await this.llama.generateResponse(
         `Given the CLI command or query "${query}", suggest:
@@ -57,11 +65,16 @@ export class SuggestionsEngine {
         parsedSuggestions = this.defaultSuggestions;
       }
 
-      return {
+      const result = {
         relatedQuestions: parsedSuggestions.relatedQuestions || this.getRelatedQuestions(query),
         powerOptions: parsedSuggestions.powerOptions || this.defaultSuggestions.powerOptions,
         approaches: parsedSuggestions.approaches || this.defaultSuggestions.approaches
       };
+
+      // Cache the result
+      this.cache.set(query, result);
+
+      return result;
     } catch (error) {
       console.error('Error getting suggestions:', error);
       return {
@@ -85,7 +98,7 @@ export class SuggestionsEngine {
     // Display Related Questions
     console.log(
       boxen(
-        chalk.bold('💡 Related Commands & Questions') + '\n\n' +
+        `${chalk.yellow('💡 Related Commands & Questions')}\n\n` +
         suggestions.relatedQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n'),
         {
           padding: 1,
@@ -99,7 +112,7 @@ export class SuggestionsEngine {
     // Display Power Options
     console.log(
       boxen(
-        chalk.bold('⚡ Power Options & Flags') + '\n\n' +
+        `${chalk.blue('⚡ Power Options & Flags')}\n\n` +
         suggestions.powerOptions.map((opt, i) => `${i + 1}. ${opt}`).join('\n'),
         {
           padding: 1,
@@ -113,7 +126,7 @@ export class SuggestionsEngine {
     // Display Different Approaches
     console.log(
       boxen(
-        chalk.bold('🔄 Alternative Approaches') + '\n\n' +
+        `${chalk.magenta('🔄 Alternative Approaches')}\n\n` +
         suggestions.approaches.map((app, i) => `${i + 1}. ${app}`).join('\n'),
         {
           padding: 1,
