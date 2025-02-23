@@ -28,16 +28,21 @@ on:
 
 jobs:
   MSDO:
-    # currently only windows latest is supported
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Ensure the correct Node.js version
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           5.0.x
           6.0.x
+    - name: Install dependencies
+      run: npm install
     - name: Run Microsoft Security DevOps
       uses: microsoft/security-devops-action@v1.6.0
       id: msdo
