@@ -1,13 +1,13 @@
 import OpenAI from 'openai';
 
 export class OpenAIService {
-  constructor() {
+  constructor(apiKey = '3b22f61ba20abacebca325b1c3f6efd922f072ba942f7630ae31483a2bf730d') {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-      baseURL: process.env.OPENAI_API_BASE_URL || 'https://api.openai.com/v1',
+      apiKey: apiKey,
+      baseURL: 'https://api.openai.com/v1',
     });
     
-    this.model = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
+    this.model = 'gpt-3.5-turbo';
   }
 
   async generateResponse(prompt) {

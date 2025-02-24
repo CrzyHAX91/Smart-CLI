@@ -1,8 +1,6 @@
-const API_KEY = 'ada101ab0e19cbd984caf03b69b54e94b54bf20d';
-
 export class SerperService {
-  constructor() {
-    this.apiKey = API_KEY;
+  constructor(apiKey = 'ada101ab0e19cbd984caf03b69b54e94b54bf20d') {
+    this.apiKey = apiKey;
     this.baseUrl = 'https://google.serper.dev/search';
   }
 

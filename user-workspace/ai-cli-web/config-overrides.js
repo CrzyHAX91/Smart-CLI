@@ -22,10 +22,14 @@ module.exports = function override(config) {
     })
   ]);
 
+  // Update the rule to remove resolveLoader
   config.module.rules.push({
     test: /\.m?js/,
-    resolve: {
-      fullySpecified: false
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-env']
+      }
     }
   });
 

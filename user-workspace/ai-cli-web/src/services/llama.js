@@ -1,7 +1,7 @@
 import Replicate from 'replicate';
 
 export class LlamaService {
-  constructor(apiKey) {
+  constructor(apiKey = '3b22f61ba20abacebca325b1c3f6efd922f072ba942f7630ae31483a2bf730d') {
     this.replicate = new Replicate({
       auth: apiKey,
     });
@@ -10,7 +10,7 @@ export class LlamaService {
   async generateResponse(prompt) {
     try {
       const output = await this.replicate.run(
-        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+        "meta/llama-3.3370B-instruct-turbo",
         {
           input: {
             prompt,
