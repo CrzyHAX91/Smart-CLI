@@ -106,6 +106,18 @@ ai-cli-tool/
 └── scripts/          # Build scripts
 ```
 
+### Security
+
+This project uses GitHub's Dependabot to keep dependencies up to date and secure. Dependabot automatically creates pull requests to update dependencies when:
+- Security vulnerabilities are found
+- New versions of dependencies are released
+
+Configuration:
+- Weekly dependency checks
+- Automatic merging of minor and patch updates
+- Security updates prioritized
+- Pull requests labeled for easy identification
+
 ### Recent Updates
 
 - Added ES modules support
@@ -114,6 +126,7 @@ ai-cli-tool/
 - Added caching functionality
 - Improved suggestions engine
 - Added beautiful CLI interface with neon colors
+- Added Dependabot integration for security updates
 
 ## Contributing
 
