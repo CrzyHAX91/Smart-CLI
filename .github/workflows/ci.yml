@@ -52,12 +52,42 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Run Snyk to check for vulnerabilities
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+
+    - name: Run Snyk to check for vulnerabilities (Node.js)
       uses: snyk/actions/node@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         command: test
+
+    - name: Run Snyk to check for vulnerabilities (Python)
+      uses: snyk/actions/python@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        command: test
+
+    - name: Run safety check
+      run: safety check -r user-workspace/flask-api-service/requirements.txt
+
+    - name: Run Bandit
+      run: bandit -r user-workspace/flask-api-service -f custom
+
+    - name: Run npm audit
+      run: |
+        cd user-workspace/ai-cli-tool
+        npm audit
+        cd ../ai-cli-web
+        npm audit
 
   release:
     needs: [test, security_scan]
