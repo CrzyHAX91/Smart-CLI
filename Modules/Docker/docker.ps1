@@ -11,25 +11,29 @@ else {
 }
 
 # Version information
-$DOCKER_MODULE_VERSION = "1.0.0"
+$script:DOCKER_MODULE_VERSION = "1.0.0"
 
 # Check if Docker is installed
 function Test-DockerInstallation {
+    [CmdletBinding()]
+    param()
+    
     try {
         $dockerVersion = docker version --format '{{.Server.Version}}'
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput "Docker version $dockerVersion detected" -ForegroundColor Green
+            Write-Host "Docker version $dockerVersion detected" -ForegroundColor Green
             return $true
         }
     }
     catch {
-        Write-SmartError "Docker is not installed or not running"
+        Write-Host "Docker is not installed or not running" -ForegroundColor Yellow
         return $false
     }
 }
 
 # List containers
 function Get-DockerContainers {
+    [CmdletBinding()]
     param(
         [switch]$All,
         [switch]$Quiet
@@ -46,17 +50,19 @@ function Get-DockerContainers {
         
         $containers = docker $args
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput $containers
+            Write-Host $containers
             return $containers
         }
     }
     catch {
-        Write-SmartError "Failed to list containers" -ErrorRecord $_
+        $errorMessage = $_.Exception.Message
+        Write-Host "Failed to list containers: $errorMessage" -ForegroundColor Red
     }
 }
 
 # List images
 function Get-DockerImages {
+    [CmdletBinding()]
     param(
         [switch]$All,
         [switch]$Quiet
@@ -73,17 +79,19 @@ function Get-DockerImages {
         
         $images = docker $args
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput $images
+            Write-Host $images
             return $images
         }
     }
     catch {
-        Write-SmartError "Failed to list images" -ErrorRecord $_
+        $errorMessage = $_.Exception.Message
+        Write-Host "Failed to list images: $errorMessage" -ForegroundColor Red
     }
 }
 
 # Start container
 function Start-DockerContainer {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ContainerName
@@ -96,18 +104,20 @@ function Start-DockerContainer {
     try {
         $result = docker start $ContainerName
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput "Container $ContainerName started successfully" -ForegroundColor Green
+            Write-Host "Container $ContainerName started successfully" -ForegroundColor Green
             return $true
         }
     }
     catch {
-        Write-SmartError "Failed to start container $ContainerName" -ErrorRecord $_
+        $errorMessage = $_.Exception.Message
+        Write-Host ("Failed to start container {0}: {1}" -f $ContainerName, $errorMessage) -ForegroundColor Red
         return $false
     }
 }
 
 # Stop container
 function Stop-DockerContainer {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ContainerName,
@@ -123,18 +133,20 @@ function Stop-DockerContainer {
     try {
         $result = docker stop --time $Timeout $ContainerName
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput "Container $ContainerName stopped successfully" -ForegroundColor Green
+            Write-Host "Container $ContainerName stopped successfully" -ForegroundColor Green
             return $true
         }
     }
     catch {
-        Write-SmartError "Failed to stop container $ContainerName" -ErrorRecord $_
+        $errorMessage = $_.Exception.Message
+        Write-Host ("Failed to stop container {0}: {1}" -f $ContainerName, $errorMessage) -ForegroundColor Red
         return $false
     }
 }
 
 # Get container logs
 function Get-DockerLogs {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ContainerName,
@@ -156,14 +168,12 @@ function Get-DockerLogs {
         
         $logs = docker $args
         if ($LASTEXITCODE -eq 0) {
-            Write-SmartOutput $logs
+            Write-Host $logs
             return $logs
         }
     }
     catch {
-        Write-SmartError "Failed to get logs for container $ContainerName" -ErrorRecord $_
+        $errorMessage = $_.Exception.Message
+        Write-Host ("Failed to get logs for container {0}: {1}" -f $ContainerName, $errorMessage) -ForegroundColor Red
     }
 }
-
-# Export functions
-Export-ModuleMember -Function Get-DockerContainers, Get-DockerImages, Start-DockerContainer, Stop-DockerContainer, Get-DockerLogs

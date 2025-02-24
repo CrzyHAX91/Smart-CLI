@@ -1,13 +1,11 @@
 # Core module for SmartCLI
 # Provides essential functionality used by other modules
 
-$ErrorActionPreference = "Stop"
-
-# Version information
-$CORE_VERSION = "1.0.0"
+$script:CORE_VERSION = "1.0.0"
 
 # Function to write colored output
 function Write-SmartOutput {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$Message,
@@ -24,6 +22,7 @@ function Write-SmartOutput {
 
 # Function to handle errors
 function Write-SmartError {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$Message,
@@ -32,14 +31,15 @@ function Write-SmartError {
         [System.Management.Automation.ErrorRecord]$ErrorRecord
     )
     
-    Write-SmartOutput "Error: $Message" -ForegroundColor Red
+    Write-Host "Error: $Message" -ForegroundColor Red
     if ($ErrorRecord) {
-        Write-SmartOutput "Details: $($ErrorRecord.Exception.Message)" -ForegroundColor Red
+        Write-Host "Details: $($ErrorRecord.Exception.Message)" -ForegroundColor Red
     }
 }
 
 # Function to get configuration
 function Get-SmartConfig {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ConfigName
@@ -60,6 +60,7 @@ function Get-SmartConfig {
 
 # Function to set configuration
 function Set-SmartConfig {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ConfigName,
@@ -86,6 +87,7 @@ function Set-SmartConfig {
 
 # Function to validate module dependencies
 function Test-ModuleDependencies {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string[]]$RequiredModules
@@ -108,6 +110,7 @@ function Test-ModuleDependencies {
 
 # Function to load module
 function Import-SmartModule {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$ModuleName
@@ -129,6 +132,3 @@ function Import-SmartModule {
         return $false
     }
 }
-
-# Export functions
-Export-ModuleMember -Function Write-SmartOutput, Write-SmartError, Get-SmartConfig, Set-SmartConfig, Test-ModuleDependencies, Import-SmartModule
