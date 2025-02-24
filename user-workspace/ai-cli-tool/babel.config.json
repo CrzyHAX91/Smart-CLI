@@ -1,0 +1,42 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        },
+        "modules": "commonjs"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-import-meta",
+    "@babel/plugin-transform-modules-commonjs"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            },
+            "modules": "commonjs"
+          }
+        ]
+      ],
+      "plugins": [
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-syntax-import-meta",
+        "@babel/plugin-transform-modules-commonjs"
+      ]
+    }
+  },
+  "assumptions": {
+    "setPublicClassFields": true
+  },
+  "sourceType": "unambiguous"
+}
