@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCLI Project Structure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        .project-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .folder {
+            margin-left: 20px;
+        }
+        .file {
+            margin-left: 40px;
+            color: #333;
+        }
+        .folder-name {
+            color: #2962ff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .file-name {
+            color: #333;
+        }
+        .description {
+            color: #666;
+            font-style: italic;
+            margin-left: 10px;
+        }
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .workspace {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .module {
+            background-color: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <h1>SmartCLI Project Structure</h1>
+        
+        <div class="folder">
+            <div class="folder-name">📁 SmartCLI/</div>
+            
+            <div class="folder">
+                <div class="folder-name">📁 Modules/</div>
+                <div class="module">
+                    <div class="folder-name">📁 Core/</div>
+                    <div class="file">📄 core.ps1 <span class="description">Core functionality implementation</span></div>
+                </div>
+                <div class="module">
+                    <div class="folder-name">📁 Docker/</div>
+                    <div class="file">📄 Docker.psd1 <span class="description">Docker module manifest</span></div>
+                    <div class="file">📄 docker.ps1 <span class="description">Docker functionality implementation</span></div>
+                </div>
+            </div>
+
+            <div class="folder">
+                <div class="folder-name">📁 docs/</div>
+                <div class="folder">
+                    <div class="folder-name">📁 modules/</div>
+                    <div class="file">📄 Docker.md <span class="description">Docker module documentation</span></div>
+                    <div class="file">📄 index.md <span class="description">Main documentation index</span></div>
+                    <div class="file">📄 development.md <span class="description">Development guidelines</span></div>
+                </div>
+            </div>
+
+            <div class="folder">
+                <div class="folder-name">📁 tests/</div>
+                <div class="folder">
+                    <div class="folder-name">📁 Docker/</div>
+                    <div class="file">📄 Docker.Tests.ps1 <span class="description">Docker module tests</span></div>
+                </div>
+                <div class="file">📄 test-all.ps1 <span class="description">Test runner script</span></div>
+            </div>
+
+            <div class="workspace">
+                <div class="folder-name">📁 user-workspace/</div>
+                <div class="folder">
+                    <div class="folder-name">📁 flask-api-service/</div>
+                    <div class="file">📄 requirements.txt <span class="description">Python dependencies</span></div>
+                </div>
+                <div class="folder">
+                    <div class="folder-name">📁 ai-cli-tool/</div>
+                    <div class="file">📄 package.json <span class="description">Node.js dependencies and scripts</span></div>
+                </div>
+                <div class="folder">
+                    <div class="folder-name">📁 ai-cli-web/</div>
+                    <div class="file">📄 package.json <span class="description">Web application configuration</span></div>
+                </div>
+            </div>
+
+            <div class="file">📄 README.md <span class="description">Project documentation</span></div>
+            <div class="file">📄 LICENSE <span class="description">License information</span></div>
+            <div class="file">📄 VERSION <span class="description">Version information</span></div>
+            <div class="file">📄 CONTRIBUTING.md <span class="description">Contribution guidelines</span></div>
+            <div class="file">📄 SECURITY.md <span class="description">Security policies</span></div>
+            <div class="file">📄 ROADMAP.md <span class="description">Project roadmap</span></div>
+            <div class="file">📄 smartcli.ps1 <span class="description">Main script file</span></div>
+        </div>
+    </div>
+</body>
+</html>

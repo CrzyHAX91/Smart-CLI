@@ -2,6 +2,10 @@
 
 A powerful PowerShell-based CLI tool for automating common development tasks.
 
+## Project Structure
+
+View our [Project Structure Visualization](./project_demo.html) to get an overview of the SmartCLI project layout.
+
 ## Features
 
 - 🐳 Docker management commands
