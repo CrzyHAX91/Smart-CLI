@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Run Tests
       shell: pwsh
@@ -38,15 +38,17 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
+      shell: pwsh
+      run: |
+        $version = (Get-Content .\VERSION).Trim()
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git tag -a v$version -m "Release $version"
+        git push origin v$version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
