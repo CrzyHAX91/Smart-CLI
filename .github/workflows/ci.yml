@@ -1,0 +1,52 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Run Tests
+      shell: pwsh
+      run: |
+        # Run Pester tests if they exist
+        if (Test-Path ./tests) {
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Invoke-Pester ./tests -CI
+        }
+    
+    - name: Lint PowerShell Scripts
+      shell: pwsh
+      run: |
+        Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
+        $results = Invoke-ScriptAnalyzer -Path . -Recurse
+        $results | Format-Table -AutoSize
+        if ($results.Severity -contains 'Error') {
+          throw "Script analysis found errors"
+        }
+
+  release:
+    needs: test
+    runs-on: windows-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
