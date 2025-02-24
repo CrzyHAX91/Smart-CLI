@@ -8,33 +8,60 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
     
-    - name: Run Tests
-      shell: pwsh
-      run: |
-        # Run Pester tests if they exist
-        if (Test-Path ./tests) {
-          Install-Module -Name Pester -Force -SkipPublisherCheck
-          Invoke-Pester ./tests -CI
-        }
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
     
-    - name: Lint PowerShell Scripts
-      shell: pwsh
+    - name: Install dependencies
       run: |
-        Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
-        $results = Invoke-ScriptAnalyzer -Path . -Recurse
-        $results | Format-Table -AutoSize
-        if ($results.Severity -contains 'Error') {
-          throw "Script analysis found errors"
-        }
+        python -m pip install --upgrade pip
+        pip install -r user-workspace/flask-api-service/requirements.txt
+        pip install pytest
+    
+    - name: Run Python tests
+      run: pytest
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    
+    - name: Install Node.js dependencies
+      run: |
+        cd user-workspace/ai-cli-tool
+        npm ci
+    
+    - name: Run Node.js tests
+      run: |
+        cd user-workspace/ai-cli-tool
+        npm test
+    
+    - name: Lint JavaScript
+      run: |
+        cd user-workspace/ai-cli-tool
+        npm run lint
+
+  security_scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        command: test
 
   release:
-    needs: test
-    runs-on: windows-latest
+    needs: [test, security_scan]
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
@@ -43,12 +70,12 @@ jobs:
         fetch-depth: 0
     
     - name: Create Release
-      shell: pwsh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        $version = (Get-Content .\VERSION).Trim()
+        version=$(cat VERSION)
         git config user.name github-actions
         git config user.email github-actions@github.com
         git tag -a v$version -m "Release $version"
         git push origin v$version
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        gh release create v$version --generate-notes
