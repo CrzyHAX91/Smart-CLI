@@ -2,123 +2,65 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of SmartCLI are currently being supported with security updates.
+Use this section to tell people about which versions of your project are
+currently being supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+| 1.x.x   | :white_check_mark: |
 | < 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-We take the security of SmartCLI seriously. If you believe you have found a security vulnerability, please follow these steps:
+We take the security of SmartCLI seriously. If you have discovered a security vulnerability in this project, please follow these steps to responsibly disclose it:
 
-1. **Do Not** report security vulnerabilities through public GitHub issues.
+1. **Do not** report security vulnerabilities through public GitHub issues.
 
-2. Instead, please report them via email to [security@yourdomain.com](mailto:security@yourdomain.com).
-   - Encrypt your email using our PGP key (available upon request)
-   - Include as much information as possible:
-     - Type of issue
-     - Full paths of source file(s) related to the issue
-     - Location of the affected source code
-     - Any special configuration required to reproduce the issue
-     - Step-by-step instructions to reproduce the issue
-     - Proof-of-concept or exploit code (if possible)
-     - Impact of the issue, including how an attacker might exploit it
+2. Instead, please report them via email to [security@example.com](mailto:security@example.com). If possible, encrypt your message with our PGP key (available upon request).
 
-3. Allow up to 48 hours for an initial response.
+3. Please include the following information in your report:
+   - Type of issue (e.g., buffer overflow, SQL injection, cross-site scripting, etc.)
+   - Full paths of source file(s) related to the manifestation of the issue
+   - The location of the affected source code (tag/branch/commit or direct URL)
+   - Any special configuration required to reproduce the issue
+   - Step-by-step instructions to reproduce the issue
+   - Proof-of-concept or exploit code (if possible)
+   - Impact of the issue, including how an attacker might exploit it
 
-## Security Considerations
-
-### Installation Security
-
-- The installation script runs with minimal required permissions
-- All downloaded content is verified using checksums
-- PowerShell execution policy is set appropriately
-- Installation paths are properly secured
-
-### Runtime Security
-
-- No sensitive data is logged by default
-- Secure credential handling
-- Proper error handling to prevent information leakage
-- Regular security updates
-
-### Module Security
-
-When developing new modules, ensure:
-
-1. **Input Validation**
-   - Validate all input parameters
-   - Sanitize file paths
-   - Check for malicious input
-
-2. **Credential Handling**
-   - Never store credentials in plain text
-   - Use secure credential storage
-   - Implement proper token management
-
-3. **File Operations**
-   - Use secure file operations
-   - Implement proper file permissions
-   - Validate file content before processing
-
-4. **Network Operations**
-   - Use secure protocols (HTTPS, SSH)
-   - Implement proper certificate validation
-   - Handle sensitive data securely
-
-## Security Best Practices
-
-When using SmartCLI:
-
-1. **Keep Updated**
-   - Always use the latest version
-   - Apply security patches promptly
-   - Monitor security advisories
-
-2. **Configuration**
-   - Use minimal required permissions
-   - Secure configuration files
-   - Implement proper access controls
-
-3. **Authentication**
-   - Use strong passwords
-   - Implement MFA where possible
-   - Rotate credentials regularly
-
-4. **Logging**
-   - Enable security logging
-   - Monitor for suspicious activity
-   - Maintain audit trails
+4. Allow up to 48 hours for an initial response to your report. We will endeavor to keep you informed about the progress towards a fix and full announcement, and may ask for additional information or guidance.
 
 ## Disclosure Policy
 
-Upon receipt of a security report, we will:
+When we receive a security bug report, we will assign it to a primary handler. This person will coordinate the fix and release process, involving the following steps:
 
-1. Confirm receipt of the report within 48 hours
-2. Provide an initial assessment within 5 business days
-3. Work on reproducing and validating the issue
-4. Develop and test a fix
-5. Release a security update
-6. Credit the reporter (if desired) in the security advisory
+1. Confirm the problem and determine the affected versions.
+2. Audit code to find any potential similar problems.
+3. Prepare fixes for all releases still under maintenance. These fixes will be released as fast as possible.
 
-## Comments on Security
+## Comments on this Policy
 
-We believe in responsible disclosure. After fixing a vulnerability:
+If you have suggestions on how this process could be improved please submit a pull request.
 
-1. We will release a security advisory
-2. Users will be notified through our notification system
-3. The reporter will be credited (if desired)
-4. Details will be published after users have had time to update
+## Security Update Process
 
-## Regular Security Assessments
+1. The security report is received and is assigned a primary handler.
+2. The problem is confirmed and a list of all affected versions is determined.
+3. Code is audited to find any potential similar problems.
+4. Fixes are prepared for all supported releases.
+5. New versions are released and notifications are sent out.
 
-We conduct regular security assessments:
+## Security-Related Configuration
 
-1. Automated security scanning
-2. Code reviews
-3. Dependency updates
-4. Security best practices review
+- We use HTTPS/SSL for all communications.
+- We use secure hashing algorithms for storing passwords.
+- We implement rate limiting on authentication attempts.
+- We use parameterized queries to prevent SQL injection.
+- We sanitize all user inputs to prevent XSS attacks.
+
+## Known Security Gaps & Future Enhancements
+
+- We are working on implementing two-factor authentication.
+- We plan to add support for security keys in the next major release.
+- We are in the process of conducting a third-party security audit.
 
 Thank you for helping keep SmartCLI and its users safe!
