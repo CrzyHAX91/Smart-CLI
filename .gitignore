@@ -5,6 +5,7 @@ install_log.txt
 # Module-specific
 Modules/**/temp/
 Modules/**/logs/
+Modules/dropshipv2/
 
 # Environment
 .env
