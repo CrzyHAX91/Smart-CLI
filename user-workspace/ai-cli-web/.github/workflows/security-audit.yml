@@ -1,0 +1,77 @@
+name: Security Audit
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Run at midnight every Monday
+  push:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+      - '.github/workflows/security-audit.yml'
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run security audit
+        run: |
+          echo "Running npm audit..."
+          npm audit
+          
+          echo "Running npm outdated..."
+          npm outdated
+          
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'Smart-CLI'
+          path: '.'
+          format: 'HTML'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+
+      - name: Upload dependency check report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-check-report
+          path: reports
+
+      - name: Check for security best practices
+        run: |
+          echo "Checking for security best practices..."
+          # Check for sensitive data in repository
+          git grep -l 'password\|secret\|token\|key' -- ':!*.md' ':!.github/workflows/*' || true
+          
+          # Check package.json for security configurations
+          echo "Checking package.json security configurations..."
+          if [ -f package.json ]; then
+            grep -i "\"private\":" package.json || echo "Warning: private field not found in package.json"
+          fi
+
+      - name: Security Scan Summary
+        run: |
+          echo "Security Scan Complete"
+          echo "Please review the generated reports in the artifacts section"
+          echo "Remember to:"
+          echo "1. Review all dependencies regularly"
+          echo "2. Keep dependencies up to date"
+          echo "3. Monitor GitHub Security alerts"
+          echo "4. Schedule regular security training"
