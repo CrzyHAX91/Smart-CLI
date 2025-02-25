@@ -3,11 +3,12 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     open-pull-requests-limit: 10
     versioning-strategy: auto
     allow:
-      - dependency-type: "all"
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
     commit-message:
       prefix: "fix"
       prefix-development: "chore"
@@ -19,10 +20,13 @@ updates:
       - "CrzyHAX91"
     assignees:
       - "CrzyHAX91"
-    groups:
-      dependencies:
-        patterns:
-          - "*"
     ignore:
-      - dependency-name: "node-fetch"
-        versions: ["4.x"]
+      - dependency-name: "react-scripts"
+        versions: ["5.x"]  # Ignore major updates to react-scripts
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
+    rebase-strategy: "auto"
+    target-branch: "main"
