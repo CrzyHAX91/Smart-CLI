@@ -29,5 +29,5 @@ Flask-Limiter==3.5.0
 Flask-Cors==5.0.1
 
 # Monitoring and logging
-sentry-sdk[flask]==1.31.0
+sentry-sdk[flask]==2.22.0
 structlog==23.1.0
