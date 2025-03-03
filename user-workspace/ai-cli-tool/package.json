@@ -33,7 +33,7 @@
     "figlet": "^1.6.0",
     "inquirer": "^9.2.11",
     "node-fetch": "^3.3.2",
-    "openai": "^4.17.4",
+    "openai": "^4.86.1",
     "ora": "^7.0.1",
     "replicate": "^0.22.0",
     "semver": "^7.5.4",
