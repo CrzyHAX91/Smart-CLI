@@ -33,7 +33,13 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "bot": "node src/bot.js",
+    "cli-bot": "node src/cli-bot-fixed.js",
+    "cli-bot:keep-alive": "node src/cli-bot-fixed.js --interval=5",
+    "keep-alive": "node src/keep-alive-bot.js",
+    "server": "node src/server.js",
+    "keep-alive-client": "node src/keep-alive-client.js"
   },
   "eslintConfig": {
     "extends": [
