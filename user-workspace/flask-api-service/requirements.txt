@@ -22,7 +22,7 @@ pytest==7.4.4
 pytest-cov==4.1.0
 black==25.1.0
 flake8==7.0.0
-bandit==1.7.7
+bandit==1.8.3
 
 # Rate limiting and protection
 Flask-Limiter==3.5.1
