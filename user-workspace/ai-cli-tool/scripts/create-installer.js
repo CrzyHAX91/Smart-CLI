@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -68,7 +68,7 @@ async function createInstaller() {
     await fs.writeFile(INSTALLER_CONFIG, nsisScript);
     
     // Run NSIS compiler
-    execSync(`makensis ${INSTALLER_CONFIG}`, { stdio: 'inherit' });
+    execFileSync('makensis', [INSTALLER_CONFIG], { stdio: 'inherit' });
     
     console.log('Installer created successfully!');
   } catch (error) {
