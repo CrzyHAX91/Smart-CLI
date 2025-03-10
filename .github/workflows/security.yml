@@ -73,7 +73,7 @@ jobs:
       # Create Pull Request if needed
       - name: Create Pull Request for Security Updates
         if: failure()
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Security: Update dependencies to fix vulnerabilities"
@@ -131,7 +131,7 @@ jobs:
           "
 
       - name: Create Pull Request for Updates
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Chore: Update dependencies to latest versions"
