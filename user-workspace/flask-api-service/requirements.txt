@@ -9,7 +9,7 @@ MarkupSafe==3.0.2
 # Security
 python-dotenv==1.0.1
 Flask-Talisman==1.1.0
-Flask-SeaSurf==1.1.1
+Flask-SeaSurf==2.0.0
 PyJWT==2.10.1
 cryptography==44.0.2
 Flask-Security-Too==5.6.0
