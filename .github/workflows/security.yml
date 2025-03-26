@@ -54,7 +54,7 @@ jobs:
           npm ci
           npm audit fix --force
           npm audit
-          
+
       - name: Check Web Interface
         working-directory: user-workspace/ai-cli-web
         run: |
