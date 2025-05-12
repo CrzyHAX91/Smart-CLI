@@ -186,7 +186,7 @@ jobs:
     steps:
       - name: Notify on Success
         if: success()
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-github-action@v2.1.0
         with:
           channel-id: 'security-updates'
           slack-message: "Security checks and dependency updates completed successfully! :white_check_mark:"
@@ -195,7 +195,7 @@ jobs:
 
       - name: Notify on Failure
         if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-github-action@v2.1.0
         with:
           channel-id: 'security-updates'
           slack-message: "Security checks or dependency updates failed! :x: Please check the workflow logs."
