@@ -2,65 +2,102 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+| 1.2.x   | :white_check_mark: |
+| 1.1.x   | :white_check_mark: |
+| < 1.1   | :x:                |
+
+## Security Measures
+
+### Dependencies
+- All dependencies are locked to specific versions via package-lock.json
+- Regular security audits are performed using npm audit
+- Dependabot alerts are monitored and addressed promptly
+- Security overrides are in place for transitive dependencies
+
+### API Security
+- All API endpoints use HTTPS
+- Rate limiting is implemented
+- Input validation and sanitization
+- CORS policies are properly configured
+
+### Authentication
+- JWT tokens with proper expiration
+- Secure password hashing using bcrypt
+- Two-factor authentication support
+- Session management with secure defaults
+
+### Data Protection
+- Environment variables for sensitive data
+- Encryption at rest for sensitive information
+- Secure communication channels
+- Regular security audits
 
 ## Reporting a Vulnerability
 
-We take the security of SmartCLI seriously. If you have discovered a security vulnerability in this project, please follow these steps to responsibly disclose it:
+If you discover a security vulnerability within SmartCLI, please follow these steps:
 
-1. **Do not** report security vulnerabilities through public GitHub issues.
+1. **Do Not** disclose the vulnerability publicly
+2. Send a detailed report to security@smartcli.com including:
+   - Description of the vulnerability
+   - Steps to reproduce
+   - Potential impact
+   - Suggested fix (if any)
+3. You will receive a response within 48 hours
+4. A fix will be developed and tested
+5. A security advisory will be published once the fix is ready
 
-2. Instead, please report them via email to [security@example.com](mailto:security@example.com). If possible, encrypt your message with our PGP key (available upon request).
+## Security Best Practices
 
-3. Please include the following information in your report:
-   - Type of issue (e.g., buffer overflow, SQL injection, cross-site scripting, etc.)
-   - Full paths of source file(s) related to the manifestation of the issue
-   - The location of the affected source code (tag/branch/commit or direct URL)
-   - Any special configuration required to reproduce the issue
-   - Step-by-step instructions to reproduce the issue
-   - Proof-of-concept or exploit code (if possible)
-   - Impact of the issue, including how an attacker might exploit it
+### Installation
+1. Always use the latest stable version
+2. Install dependencies with `npm ci` to ensure exact versions
+3. Run `npm audit` regularly
+4. Keep your Node.js runtime updated
 
-4. Allow up to 48 hours for an initial response to your report. We will endeavor to keep you informed about the progress towards a fix and full announcement, and may ask for additional information or guidance.
+### Configuration
+1. Use environment variables for sensitive data
+2. Set proper file permissions
+3. Configure CORS appropriately
+4. Enable rate limiting
 
-## Disclosure Policy
+### Development
+1. Follow secure coding guidelines
+2. Use input validation
+3. Implement proper error handling
+4. Add security headers
+5. Use content security policy
 
-When we receive a security bug report, we will assign it to a primary handler. This person will coordinate the fix and release process, involving the following steps:
+## Recent Security Updates
 
-1. Confirm the problem and determine the affected versions.
-2. Audit code to find any potential similar problems.
-3. Prepare fixes for all releases still under maintenance. These fixes will be released as fast as possible.
+### Version 1.2.2
+- Updated all dependencies to latest secure versions
+- Added package-lock.json to enforce exact versions
+- Implemented security overrides for transitive dependencies
+- Enhanced input validation
+- Added rate limiting
 
-## Comments on this Policy
+### Version 1.2.1
+- Fixed potential XSS vulnerability
+- Updated crypto-related dependencies
+- Enhanced error handling
+- Improved CORS configuration
 
-If you have suggestions on how this process could be improved please submit a pull request.
+## Security Contacts
 
-## Security Update Process
+- Security Team: security@smartcli.com
+- Bug Bounty Program: bounty@smartcli.com
+- Security Advisories: https://github.com/yourusername/Smart-CLI/security/advisories
 
-1. The security report is received and is assigned a primary handler.
-2. The problem is confirmed and a list of all affected versions is determined.
-3. Code is audited to find any potential similar problems.
-4. Fixes are prepared for all supported releases.
-5. New versions are released and notifications are sent out.
+## Acknowledgments
 
-## Security-Related Configuration
+We would like to thank the following individuals and organizations for their contributions to the security of SmartCLI:
 
-- We use HTTPS/SSL for all communications.
-- We use secure hashing algorithms for storing passwords.
-- We implement rate limiting on authentication attempts.
-- We use parameterized queries to prevent SQL injection.
-- We sanitize all user inputs to prevent XSS attacks.
+- Security researchers who responsibly disclose vulnerabilities
+- Open source community for security patches
+- Dependabot for automated security updates
 
-## Known Security Gaps & Future Enhancements
+## License
 
-- We are working on implementing two-factor authentication.
-- We plan to add support for security keys in the next major release.
-- We are in the process of conducting a third-party security audit.
-
-Thank you for helping keep SmartCLI and its users safe!
+This security policy is part of SmartCLI, licensed under the MIT License.

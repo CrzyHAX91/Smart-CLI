@@ -1,91 +1,254 @@
 # Contributing to SmartCLI
 
-We love your input! We want to make contributing to SmartCLI as easy and transparent as possible, whether it's:
+Thank you for your interest in contributing to SmartCLI! This document provides guidelines and instructions for contributing to the project.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
-- Becoming a maintainer
+## Code of Conduct
 
-## Development Process
+By participating in this project, you agree to abide by our Code of Conduct:
+- Be respectful and inclusive
+- Exercise consideration and empathy
+- Focus on constructive feedback and solutions
+- Maintain professionalism in all interactions
 
-We use GitHub to host code, to track issues and feature requests, as well as accept pull requests.
+## Getting Started
 
-1. Fork the repo and create your branch from `main`.
-2. If you've added code that should be tested, add tests.
-3. If you've changed APIs, update the documentation.
-4. Ensure the test suite passes.
-5. Make sure your code follows the style guidelines.
-6. Issue that pull request!
+1. Fork the repository
+2. Clone your fork:
+   \`\`\`bash
+   git clone https://github.com/yourusername/SmartCLI.git
+   cd SmartCLI
+   \`\`\`
+3. Create a new branch:
+   \`\`\`bash
+   git checkout -b feature/your-feature-name
+   \`\`\`
 
-## Pull Request Process
+## Development Guidelines
 
-1. Update the README.md with details of changes to the interface, if applicable.
-2. Update the version numbers in:
-   - smartcli.ps1
-   - install_smartcli.ps1
-   - Any relevant documentation
-3. The PR will be merged once you have the sign-off of at least one other developer.
+### PowerShell Modules
 
-## Any Contributions You Make Will Be Under the MIT Software License
+1. Code Style
+   - Use PascalCase for function names
+   - Use descriptive variable names
+   - Include comment-based help for functions
+   - Implement proper error handling with try/catch blocks
+   - Use Write-Log for logging
+   - Use Write-Host with colors for user feedback
 
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](LICENSE) that covers the project. Feel free to contact the maintainers if that's a concern.
+2. Example Function Structure:
+   \`\`\`powershell
+   function Verb-Noun {
+       [CmdletBinding()]
+       param(
+           [Parameter(Mandatory=$true)]
+           [string]$RequiredParam,
+           
+           [string]$OptionalParam
+       )
+       
+       try {
+           Write-Log "Starting operation" -Level Info
+           # Function logic here
+           Write-Host "Success!" -ForegroundColor Green
+       }
+       catch {
+           Write-Log "Error: $_" -Level Error
+           Write-Host "Error occurred" -ForegroundColor Red
+       }
+   }
+   \`\`\`
 
-## Report Bugs Using GitHub's [Issue Tracker](../../issues)
+### AI CLI Tool (Node.js)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](../../issues/new).
+1. Code Style
+   - Use ESLint configuration
+   - Follow JavaScript Standard Style
+   - Use async/await for asynchronous operations
+   - Implement proper error handling
+   - Add JSDoc comments for functions
 
-## Write Bug Reports With Detail, Background, and Sample Code
+2. Example Component Structure:
+   \`\`\`javascript
+   /**
+    * @description Handle user query and return AI response
+    * @param {string} query - User's question
+    * @param {Object} options - Additional options
+    * @returns {Promise<string>} AI-generated response
+    */
+   async function handleQuery(query, options = {}) {
+       try {
+           // Function logic
+           return response;
+       } catch (error) {
+           console.error('Error:', error);
+           throw new Error('Failed to process query');
+       }
+   }
+   \`\`\`
 
-**Great Bug Reports** tend to have:
+### Web Interface (React)
 
-- A quick summary and/or background
-- Steps to reproduce
-  - Be specific!
-  - Give sample code if you can.
-- What you expected would happen
-- What actually happens
-- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+1. Code Style
+   - Use functional components with hooks
+   - Implement proper TypeScript types
+   - Follow React best practices
+   - Use CSS modules or styled-components
+   - Maintain responsive design
 
-## Code Style Guidelines
+2. Example Component Structure:
+   \`\`\`jsx
+   import React, { useState, useEffect } from 'react';
+   import styles from './Component.module.css';
 
-- Use consistent indentation (4 spaces)
-- Use descriptive variable names
-- Comment your code where necessary
-- Follow PowerShell best practices
-- Keep functions focused and modular
-- Write clear error messages
+   interface Props {
+       title: string;
+       onAction: () => void;
+   }
 
-## Module Development Guidelines
+   const Component: React.FC<Props> = ({ title, onAction }) => {
+       const [state, setState] = useState<string>('');
 
-When creating new modules:
+       useEffect(() => {
+           // Component logic
+       }, []);
 
-1. Create a new .ps1 file in the Modules directory
-2. Follow the module template structure
-3. Include proper error handling
-4. Add module documentation
-5. Include module tests
-6. Update module list in README.md
+       return (
+           <div className={styles.container}>
+               {/* JSX content */}
+           </div>
+       );
+   };
 
-## Documentation
+   export default Component;
+   \`\`\`
 
-- Keep README.md up to date
-- Document all functions and modules
-- Include examples in documentation
-- Update module-specific documentation
+### Flask API Service
+
+1. Code Style
+   - Follow PEP 8 guidelines
+   - Use type hints
+   - Implement proper error handling
+   - Add docstrings for functions
+   - Use Blueprint for route organization
+
+2. Example Route Structure:
+   \`\`\`python
+   from flask import Blueprint, jsonify, request
+   from typing import Dict, Any
+
+   api = Blueprint('api', __name__)
+
+   @api.route('/endpoint', methods=['POST'])
+   def handle_request() -> Dict[str, Any]:
+       """
+       Handle incoming API request.
+       
+       Returns:
+           dict: Response data
+       """
+       try:
+           data = request.get_json()
+           # Route logic
+           return jsonify({'status': 'success', 'data': result})
+       except Exception as e:
+           return jsonify({'status': 'error', 'message': str(e)}), 500
+   \`\`\`
 
 ## Testing
 
-- Write tests for new features
-- Run existing tests before submitting PR
-- Include both unit tests and integration tests
-- Document test procedures
+### PowerShell Modules
+- Use Pester for testing
+- Place tests in the \`tests\` directory
+- Test both success and failure scenarios
+- Mock external commands when necessary
 
-## License
+### AI CLI Tool
+- Use Jest for testing
+- Maintain high test coverage
+- Mock API calls in tests
+- Test error handling
 
-By contributing, you agree that your contributions will be licensed under its MIT License.
+### Web Interface
+- Use React Testing Library
+- Test component rendering
+- Test user interactions
+- Test error states
 
-## References
+### API Service
+- Use pytest for testing
+- Test API endpoints
+- Test error handling
+- Use fixtures for test data
 
-This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/master/CONTRIBUTING.md).
+## Documentation
+
+1. Code Documentation
+   - Add comments for complex logic
+   - Include function/method documentation
+   - Document parameters and return values
+   - Explain any non-obvious behavior
+
+2. Module Documentation
+   - Update README.md when adding features
+   - Document new commands and options
+   - Include usage examples
+   - Update API documentation
+
+3. Architecture Documentation
+   - Document system design changes
+   - Update diagrams if necessary
+   - Document new dependencies
+   - Explain integration points
+
+## Pull Request Process
+
+1. Create a Feature Branch
+   - Branch from \`main\`
+   - Use descriptive branch names (e.g., \`feature/add-docker-support\`)
+
+2. Develop Your Feature
+   - Follow coding guidelines
+   - Add/update tests
+   - Update documentation
+
+3. Submit Pull Request
+   - Provide clear description
+   - Reference related issues
+   - Include test results
+   - Add screenshots if applicable
+
+4. Code Review
+   - Address review comments
+   - Make requested changes
+   - Maintain professional discourse
+
+5. Merge
+   - Squash commits if necessary
+   - Ensure CI passes
+   - Delete feature branch after merge
+
+## Release Process
+
+1. Version Bump
+   - Update version numbers
+   - Update changelog
+   - Update documentation
+
+2. Testing
+   - Run all tests
+   - Perform manual testing
+   - Test installation process
+
+3. Release
+   - Create release tag
+   - Update release notes
+   - Deploy to production
+
+## Questions or Problems?
+
+- Check existing issues
+- Create new issue if needed
+- Join discussions
+- Ask for help in pull requests
+
+Thank you for contributing to SmartCLI!
