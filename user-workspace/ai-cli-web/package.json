@@ -13,7 +13,7 @@
     "dotenv": "^16.4.1",
     "https-browserify": "^1.0.0",
     "node-fetch": "^3.3.2",
-    "openai": "^4.91.1",
+    "openai": "^4.98.0",
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
     "react": "^19.0.0",
@@ -52,10 +52,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.26.10",
+    "@babel/core": "^7.27.1",
     "@babel/eslint-parser": "^7.26.10",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.23.3",
     "eslint": "^9.23.0",
     "eslint-config-react-app": "^7.0.1",
