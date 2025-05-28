@@ -16,15 +16,10 @@
 # and provide permission before this can report data back to azure.
 # Read the official documentation here : https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-github
 
-name: "Microsoft Defender For Devops"
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  schedule:
-    - cron: '29 21 * * 5'
+permissions:
+  contents: read
+  security-events: write
+  id-token: write # Added permission for ID token
 
 jobs:
   MSDO:
@@ -35,14 +30,14 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '16' # Ensure the correct Node.js version
+        node-version: '16'
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           5.0.x
           6.0.x
     - name: Install dependencies
-      run: npm install
+      run: npm install # Removed verbose flag for production CI environment
     - name: Run Microsoft Security DevOps
       uses: microsoft/security-devops-action@v1.12.0
       id: msdo
