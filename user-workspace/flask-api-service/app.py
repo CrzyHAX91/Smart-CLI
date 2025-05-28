@@ -18,5 +18,5 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     # Enable debug mode only in development environment
-    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    debug_mode = os.getenv('FLASK_ENV', 'production') == 'development'
     app.run(debug=debug_mode)
