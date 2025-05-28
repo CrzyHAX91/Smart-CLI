@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -49,6 +51,9 @@ jobs:
 
   security_scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -93,6 +98,9 @@ jobs:
     needs: [test, security_scan]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      actions: write
     
     steps:
     - uses: actions/checkout@v4
