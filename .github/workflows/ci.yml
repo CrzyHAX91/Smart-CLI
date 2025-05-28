@@ -43,4 +43,109 @@ jobs:
           path: |
             ${{ matrix.language == 'python' && '~/.cache/pip' }}
             ${{ matrix.language == 'node' && '~/.npm' }}
-          key: ${{ runner.os }
+          key: ${{ runner.os }}-deps-${{ matrix.language }}-${{ hashFiles(matrix.language == 'python' && 'user-workspace/flask-api-service/requirements.txt' , matrix.language == 'node' && 'user-workspace/ai-cli-tool/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-${{ matrix.language }}-
+
+      - name: Install dependencies
+        run: |
+          if [ "${{ matrix.language }}" == "python" ]; then
+            python -m pip install --upgrade pip
+            pip install -r user-workspace/flask-api-service/requirements.txt pytest
+          else
+            cd user-workspace/ai-cli-tool
+            npm ci
+          fi
+
+      - name: Run tests
+        run: |
+          if [ "${{ matrix.language }}" == "python" ]; then
+            pytest
+          else
+            cd user-workspace/ai-cli-tool
+            npm test
+          fi
+
+      - name: Lint (Node.js only)
+        if: matrix.language == 'node'
+        run: |
+          cd user-workspace/ai-cli-tool
+          npm run lint
+
+  security_scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python & Node.js
+        uses: actions/setup-python@v5
+        with: { python-version: '3.9' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '16' }
+
+      - name: Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install safety bandit
+          npm install -g npm   # ensure npm audit available
+
+      - name: Snyk (Node.js)
+        uses: snyk/actions/node@v3
+        env: { SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} }
+        with: { args: test --severity-threshold=high }
+
+      - name: Snyk (Python)
+        uses: snyk/actions/python@master
+        env: { SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} }
+        with: { args: test --severity-threshold=high }
+
+      - name: Safety check
+        run: safety check -r user-workspace/flask-api-service/requirements.txt
+
+      - name: Bandit
+        run: bandit -r user-workspace/flask-api-service -f custom
+
+      - name: npm audit
+        run: |
+          cd user-workspace/ai-cli-tool && npm audit
+          cd ../ai-cli-web && npm audit
+
+  release:
+    name: 🚀 Release
+    needs: [ test, security_scan ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git for tagging
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Read version
+        id: get_version
+        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          draft: false
+          prerelease: false
+
