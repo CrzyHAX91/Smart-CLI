@@ -30,4 +30,4 @@ Flask-Cors==6.0.0
 
 # Monitoring and logging
 sentry-sdk[flask]==2.29.1
-structlog==25.2.0
+structlog==25.3.0
