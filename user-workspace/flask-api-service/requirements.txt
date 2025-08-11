@@ -42,7 +42,7 @@ Flask-Limiter==3.12
 
 
 # Monitoring & logging
-sentry-sdk[flask]==2.29.0
+sentry-sdk[flask]==2.34.1
 structlog==25.2.0
 
 # Testing & development
