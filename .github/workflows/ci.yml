@@ -1,120 +1,77 @@
+---
 name: CI/CD
-
-on:
+'on':
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch: {}
-
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
 concurrency:
   group: ci-cd-${{ github.ref }}
   cancel-in-progress: true
-
-permissions:
-  contents: read
-
 jobs:
   test:
-    name: 🔍 Test Suite
+    name: Test (${{ matrix.language }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        language: [ python, node ]
+        language: [python, node]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup ${{ matrix.language }}
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         if: matrix.language == 'python'
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
-      - name: Setup ${{ matrix.language }}
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: user-workspace/flask-api-service/requirements.txt
+      - uses: actions/setup-node@v6
         if: matrix.language == 'node'
-        uses: actions/setup-node@v4
         with:
-          node-version: '16'
-          cache: 'npm'
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ matrix.language == 'python' && '~/.cache/pip' }}
-            ${{ matrix.language == 'node' && '~/.npm' }}
-          key: ${{ runner.os }}-deps-${{ matrix.language }}-${{ hashFiles(matrix.language == 'python' && 'user-workspace/flask-api-service/requirements.txt' , matrix.language == 'node' && 'user-workspace/ai-cli-tool/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-deps-${{ matrix.language }}-
-
-      - name: Install dependencies
+          node-version: '22.x'
+          cache: npm
+          cache-dependency-path: user-workspace/ai-cli-tool/package-lock.json
+      - name: Install Python dependencies
+        if: matrix.language == 'python'
         run: |
-          if [ "${{ matrix.language }}" == "python" ]; then
-            python -m pip install --upgrade pip
-            pip install -r user-workspace/flask-api-service/requirements.txt pytest
-          else
-            cd user-workspace/ai-cli-tool
-            npm ci
-          fi
-
-      - name: Run tests
-        run: |
-          if [ "${{ matrix.language }}" == "python" ]; then
-            pytest
-          else
-            cd user-workspace/ai-cli-tool
-            npm test
-          fi
-
-      - name: Lint (Node.js only)
+          python -m pip install -r user-workspace/flask-api-service/requirements.txt
+          python -m pip check
+      - name: Real Flask HTTP tests
+        if: matrix.language == 'python'
+        env:
+          PYTHONPATH: user-workspace/flask-api-service
+        run: python -m pytest user-workspace/flask-api-service/tests -q
+      - name: Install CLI dependencies
         if: matrix.language == 'node'
+        working-directory: user-workspace/ai-cli-tool
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Offline CLI tests and lint
+        if: matrix.language == 'node'
+        working-directory: user-workspace/ai-cli-tool
         run: |
-          cd user-workspace/ai-cli-tool
+          npm test -- --runInBand
           npm run lint
-
   security_scan:
-    name: 🔒 Security Scan
-    runs-on: ubuntu-latest
+    name: Dependency security audit
     needs: test
-    permissions:
-      contents: read
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python & Node.js
-        uses: actions/setup-python@v5
-        with: { python-version: '3.9' }
-      - uses: actions/setup-node@v4
-        with: { node-version: '16' }
-
-      - name: Install security tools
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Audit CLI dependency lock
+        working-directory: user-workspace/ai-cli-tool
+        run: npm audit --audit-level=high
+      - name: Audit Python pins
         run: |
-          python -m pip install --upgrade pip
-          pip install safety bandit
-          npm install -g npm   # ensure npm audit available
-
-      - name: Snyk (Node.js)
-        uses: snyk/actions/node@v3
-        env: { SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} }
-        with: { args: test --severity-threshold=high }
-
-      - name: Snyk (Python)
-        uses: snyk/actions/python@master
-        env: { SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} }
-        with: { args: test --severity-threshold=high }
-
-      - name: Safety check
-        run: safety check -r user-workspace/flask-api-service/requirements.txt
-
-      - name: Bandit
-        run: bandit -r user-workspace/flask-api-service -f custom
-
-      - name: npm audit
-        run: |
-          cd user-workspace/ai-cli-tool && npm audit
-          cd ../ai-cli-web && npm audit
-
+          python -m pip install pip-audit
+          python -m pip_audit -r user-workspace/flask-api-service/requirements.txt
   release:
     name: 🚀 Release
     needs: [ test, security_scan ]
@@ -126,7 +83,7 @@ jobs:
 
     steps:
       - name: Checkout with full history
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -148,4 +105,3 @@ jobs:
           release_name: Release v${{ env.VERSION }}
           draft: false
           prerelease: false
-

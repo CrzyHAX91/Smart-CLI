@@ -1,53 +1,25 @@
-# Core dependencies
+# One compatible pin per package. Python 3.12 CI validates the complete set.
+argon2-cffi==25.1.0
+bandit==1.8.6
+bcrypt==4.3.0
+black==26.10.1
 click==8.1.8
-Flask==3.1.1
+cryptography==50.0.2
+flake8==7.3.0
+Flask==3.1.3
+Flask-Cors==6.0.1
+Flask-Limiter==3.12
+Flask-SeaSurf==2.0.0
+Flask-Security-Too==5.6.2
+Flask-Talisman==1.1.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
-Werkzeug==3.1.4
-
-# Security
-argon2-cffi==23.1.0
-bcrypt==4.3.0
-cryptography==45.0.2
-Flask-Security-Too==5.6.2
-Flask-SeaSurf==2.0.0
-Flask-Talisman==1.1.0
-pyOpenSSL==25.0.0
-python-dotenv==1.0.1
-PyJWT==2.10.1
-
-# Rate limiting & CORS
-python-dotenv==1.1.0
-Flask-Talisman==1.1.0
-Flask-SeaSurf==2.0.0
-PyJWT==2.10.1
-cryptography==45.0.4
-Flask-Security-Too==5.6.2
-argon2-cffi==23.1.0
-bcrypt==4.3.0
-pyOpenSSL==25.1.0
-
-# Testing and development
-pytest==8.4.1
-pytest-cov==6.1.1
-black==25.1.0
-flake8==7.2.0
-bandit==1.8.3
-
-# Rate limiting and protection
-Flask-Limiter==3.12
-Flask-Cors==6.0.0
-Flask-Limiter==3.12
-
-
-# Monitoring & logging
-sentry-sdk[flask]==2.29.0
-structlog==25.2.0
-
-# Testing & development
-bandit==1.8.3
-black==25.1.0
-flake8==7.1.2
-pytest==8.4.1
-pytest-cov==6.0.0
+PyJWT==2.15.1
+pyOpenSSL==26.4.0
+pytest==9.2.0
+pytest-cov==7.0.0
+python-dotenv==1.2.4
+sentry-sdk[flask]==2.42.1
+structlog==25.5.0
+Werkzeug==3.1.9

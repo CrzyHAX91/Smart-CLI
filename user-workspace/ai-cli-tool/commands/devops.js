@@ -9,11 +9,11 @@ import path from 'path';
 
 export const generateK8sConfig = async (options) => {
   const spinner = ora('Generating Kubernetes configuration...').start();
-  
+
   try {
     const k8sService = new KubernetesService();
     const suggestions = new DevOpsSuggestionsService(getConfig());
-    
+
     // Generate Kubernetes YAML files
     const deploymentResult = await k8sService.generateDeployment(
       options.name,
@@ -31,7 +31,7 @@ export const generateK8sConfig = async (options) => {
     // Analyze and provide suggestions
     const deploymentYaml = await fs.readFile(`${options.name}-deployment.yaml`, 'utf8');
     const k8sSuggestions = await suggestions.analyzeKubernetesConfig(deploymentYaml);
-    
+
     console.log('\n');
     suggestions.displaySuggestions(k8sSuggestions, 'kubernetes');
 
@@ -43,14 +43,14 @@ export const generateK8sConfig = async (options) => {
 
 export const handleDocker = async (options) => {
   const spinner = ora('Processing Docker operation...').start();
-  
+
   try {
     const dockerService = new DockerService();
     const suggestions = new DevOpsSuggestionsService(getConfig());
 
     if (options.build) {
       spinner.text = 'Building Docker image...';
-      
+
       // Read Dockerfile if it exists, otherwise use default
       let dockerfile = '';
       try {
@@ -94,7 +94,7 @@ export const handleDocker = async (options) => {
 
       if (runResult.success) {
         spinner.succeed(chalk.green(`Successfully started container: ${runResult.containerId}`));
-        
+
         // Show container stats
         const stats = await dockerService.getContainerStats(runResult.containerId);
         if (stats.success) {
@@ -115,19 +115,19 @@ export const handleDocker = async (options) => {
 
 export const analyzeInfrastructure = async (options) => {
   const spinner = ora('Analyzing infrastructure...').start();
-  
+
   try {
     const suggestions = new DevOpsSuggestionsService(getConfig());
-    
+
     if (options.kubernetes) {
       spinner.text = 'Analyzing Kubernetes configurations...';
       const files = await fs.readdir(options.path || '.');
       const k8sFiles = files.filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
-      
+
       for (const file of k8sFiles) {
         const content = await fs.readFile(path.join(options.path || '.', file), 'utf8');
         const k8sSuggestions = await suggestions.analyzeKubernetesConfig(content);
-        
+
         console.log(chalk.cyan(`\nAnalysis for ${file}:`));
         suggestions.displaySuggestions(k8sSuggestions, 'kubernetes');
       }
@@ -137,7 +137,7 @@ export const analyzeInfrastructure = async (options) => {
       spinner.text = 'Analyzing Dockerfile...';
       const dockerfile = await fs.readFile('Dockerfile', 'utf8');
       const dockerSuggestions = await suggestions.analyzeDockerfile(dockerfile);
-      
+
       console.log(chalk.cyan('\nDockerfile Analysis:'));
       suggestions.displaySuggestions(dockerSuggestions, 'docker');
     }

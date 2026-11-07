@@ -63,13 +63,13 @@ async function createInstaller() {
   try {
     // Create dist directory if it doesn't exist
     await fs.mkdir(path.join(__dirname, '..', 'dist'), { recursive: true });
-    
+
     // Write NSIS script
     await fs.writeFile(INSTALLER_CONFIG, nsisScript);
-    
+
     // Run NSIS compiler
     execFileSync('makensis', [INSTALLER_CONFIG], { stdio: 'inherit' });
-    
+
     console.log('Installer created successfully!');
   } catch (error) {
     console.error('Error creating installer:', error.message);

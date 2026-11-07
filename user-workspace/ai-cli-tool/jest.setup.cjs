@@ -66,10 +66,10 @@ jest.mock('ora', () => ({
 // Mock node-fetch
 jest.mock('node-fetch', () => ({
   __esModule: true,
-  default: jest.fn(() => 
+  default: jest.fn(() =>
     Promise.resolve({
       ok: true,
-      json: () => Promise.resolve({ 
+      json: () => Promise.resolve({
         choices: [{ message: { content: 'mocked response' } }],
         organic: [],
         relatedSearches: []

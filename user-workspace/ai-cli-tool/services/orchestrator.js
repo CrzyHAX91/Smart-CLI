@@ -42,7 +42,7 @@ export class AIOrchestrator {
         usedModel = 'openai';
       } catch (openaiError) {
         console.warn('OpenAI enhancement failed, trying Llama:', openaiError.message);
-        
+
         try {
           // Fallback to Llama
           const llamaContext = this.createPrompt(query, searchResults, options);
@@ -91,14 +91,14 @@ ${options.detailed ? '- Provide a detailed explanation with examples' : '- Keep 
     if (aiResponse) {
       return aiResponse;
     }
-    
+
     // Otherwise, format search results
     try {
       // Parse the search results
       const results = searchResults.split('\n').filter(line => line.trim());
-      
+
       // Extract the most relevant result
-      const mainResult = results.find(line => 
+      const mainResult = results.find(line =>
         line.toLowerCase().includes(query.toLowerCase()) ||
         (line.startsWith('1.') && !line.toLowerCase().includes('url:'))
       );
@@ -108,7 +108,7 @@ ${options.detailed ? '- Provide a detailed explanation with examples' : '- Keep 
       }
 
       // Find additional context
-      const additionalInfo = results.find(line => 
+      const additionalInfo = results.find(line =>
         !line.includes(mainResult) &&
         !line.toLowerCase().includes('url:') &&
         line.trim().length > 0

@@ -39,9 +39,9 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx'],
     fallback: {
-      "path": false,
-      "fs": false,
-      "os": false
+      'path': false,
+      'fs': false,
+      'os': false
     }
   },
   optimization: {

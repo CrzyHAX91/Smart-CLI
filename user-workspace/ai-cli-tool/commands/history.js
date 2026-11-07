@@ -82,7 +82,7 @@ export const historyCommand = async (options = {}) => {
     if (options.search) {
       spinner.text = rainbow('🔍 Searching history...');
       spinner.start();
-      const results = entries.filter(entry => 
+      const results = entries.filter(entry =>
         entry.question.toLowerCase().includes(options.search.toLowerCase()) ||
         entry.response.toLowerCase().includes(options.search.toLowerCase())
       );
@@ -140,10 +140,10 @@ async function interactiveBrowser(entries, openai) {
     const categoriesPrompt = `Analyze these questions and suggest 5 categories:
     ${entries.map(e => e.question).join('\n')}
     Return only category names separated by commas.`;
-    
+
     const categoriesResponse = await openai.generateResponse(categoriesPrompt);
     const categories = ['All', ...categoriesResponse.split(',').map(c => c.trim())];
-    
+
     spinner.succeed(chalk.greenBright('✨ Ready to browse'));
 
     while (true) {
@@ -162,7 +162,7 @@ async function interactiveBrowser(entries, openai) {
       if (category !== 'All') {
         const categoryPrompt = `Which of these questions belong to the category "${category}"? Return comma-separated indices (0-based):
         ${entries.map((e, i) => `${i}: ${e.question}`).join('\n')}`;
-        
+
         const indicesResponse = await openai.generateResponse(categoryPrompt);
         const indices = indicesResponse.split(',').map(i => parseInt(i.trim())).filter(i => !isNaN(i));
         filtered = indices.map(i => entries[i]).filter(Boolean);

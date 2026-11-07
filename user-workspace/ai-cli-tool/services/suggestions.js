@@ -7,7 +7,7 @@ export class SuggestionsEngine {
   constructor(config = {}) {
     this.openai = new OpenAIService(config);
     this.llama = new LlamaService(config);
-    
+
     this.defaultSuggestions = {
       relatedQuestions: [
         'Tell me more about the history',

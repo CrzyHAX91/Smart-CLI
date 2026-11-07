@@ -9,12 +9,12 @@ export class OpenAIService {
     if (!apiKey) {
       console.warn('OpenAI API key not found in environment variables');
     }
-    
+
     this.openai = new OpenAI({
       apiKey: apiKey,
       baseURL: process.env.OPENAI_API_BASE_URL || 'https://api.openai.com/v1'
     });
-    
+
     this.model = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
   }
 
@@ -50,7 +50,7 @@ export class OpenAIService {
       return completion.choices[0].message.content;
     } catch (error) {
       console.error('OpenAI API error:', error.message);
-      
+
       // Throw a more user-friendly error
       if (error.response?.status === 401) {
         throw new Error('OpenAI authentication failed. Please check your API key.');

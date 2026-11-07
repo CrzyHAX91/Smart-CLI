@@ -29,11 +29,12 @@ CMD ["npm", "start"]
     try {
       // Create optimized Dockerfile if optimization is enabled
       if (optimize) {
-        dockerfile = await this._optimizeDockerfile(dockerfile);
+        const optimizedDockerfile = await this._optimizeDockerfile(dockerfile);
+        await fs.writeFile(path.join(context, 'Dockerfile'), optimizedDockerfile);
       }
 
       // Write Dockerfile
-      await fs.writeFile(path.join(context, 'Dockerfile'), dockerfile);
+      if (!optimize) await fs.writeFile(path.join(context, 'Dockerfile'), dockerfile);
 
       // Build the image with optimizations
       const buildArgs = [
@@ -136,7 +137,7 @@ CMD ["npm", "start"]
     // Group related commands to reduce layers
     return dockerfile.replace(
       /(RUN.*\n)+/g,
-      (match) => `RUN ${match.split('\n').map(cmd => 
+      (match) => `RUN ${match.split('\n').map(cmd =>
         cmd.replace('RUN ', '')).join(' && \\\n    ')}\n`
     );
   }

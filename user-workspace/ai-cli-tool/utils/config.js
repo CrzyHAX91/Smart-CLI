@@ -7,9 +7,9 @@ import chalk from 'chalk';
 const projectRoot = process.cwd();
 const CONFIG_FILE = path.join(projectRoot, '.env');
 
-// Default API keys
-const DEFAULT_SERPER_KEY = 'ada101ab0e19cbd984caf03b69b54e94b54bf20d';
-const DEFAULT_LLAMA_KEY = '3b22f61ba20abacebca325b1c3f6efd922f072b8a942f630ae31483a2bf730d';
+// Credentials are supplied by the environment; no repository defaults.
+const DEFAULT_SERPER_KEY = process.env.SERPER_API_KEY || '';
+const DEFAULT_LLAMA_KEY = process.env.LLAMA_API_KEY || '';
 const DEFAULT_OPENAI_KEY = process.env.OPENAI_API_KEY || '';
 
 export const configureAPI = async (options = {}) => {
@@ -81,7 +81,7 @@ export const configureAPI = async (options = {}) => {
   try {
     const currentConfig = await loadConfig();
     const answers = await inquirer.prompt(questions);
-    
+
     const newConfig = {
       serperApiKey: answers.useCustomKeys && answers.serperApiKey ? answers.serperApiKey : currentConfig.serperApiKey || DEFAULT_SERPER_KEY,
       llamaApiKey: answers.useCustomKeys && answers.llamaApiKey ? answers.llamaApiKey : currentConfig.llamaApiKey || DEFAULT_LLAMA_KEY,
@@ -124,8 +124,8 @@ async function saveConfig(config) {
   const envContent = Object.entries(config)
     .map(([key, value]) => `${key.toUpperCase()}=${value}`)
     .join('\n');
-  
-  await fs.writeFile(CONFIG_FILE, envContent, 'utf8');
+
+  await fs.writeFile(CONFIG_FILE, envContent, { encoding: 'utf8', mode: 0o600 });
 }
 
 export const getConfig = () => {

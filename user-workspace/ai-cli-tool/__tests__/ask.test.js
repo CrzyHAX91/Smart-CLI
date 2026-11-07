@@ -44,11 +44,6 @@ jest.mock('../utils/config.js', () => ({
 jest.mock('chalk', () => ({
   default: {
     hex: () => (text) => text,
-    yellow: { bold: (text) => text },
-    blue: { bold: (text) => text },
-    magenta: { bold: (text) => text },
-    red: { bold: (text) => text },
-    green: { bold: (text) => text },
     dim: (text) => text,
     greenBright: (text) => text,
     redBright: (text) => text,
