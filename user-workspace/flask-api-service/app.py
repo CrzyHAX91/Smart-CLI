@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from src.main import main_bp
 from src.logger import setup_logger

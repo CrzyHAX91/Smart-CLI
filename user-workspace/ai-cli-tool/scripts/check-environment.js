@@ -11,7 +11,7 @@ async function checkEnvironment() {
     // Check Node.js version
     const nodeVersion = process.version;
     const requiredVersion = '>=18.0.0';
-    
+
     if (!satisfiesVersion(nodeVersion, requiredVersion)) {
       throw new Error(`Node.js ${requiredVersion} is required. Current version: ${nodeVersion}`);
     }
@@ -45,7 +45,7 @@ async function checkEnvironment() {
     // Check operating system compatibility
     const platform = process.platform;
     const supportedPlatforms = ['win32', 'linux', 'darwin'];
-    
+
     if (!supportedPlatforms.includes(platform)) {
       throw new Error(`Unsupported operating system: ${platform}`);
     }

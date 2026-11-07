@@ -15,7 +15,7 @@ export class LlamaService {
     });
 
     // Using a publicly available model
-    this.modelVersion = "replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1";
+    this.modelVersion = 'replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1';
   }
 
   async generateResponse(prompt) {
@@ -33,7 +33,7 @@ export class LlamaService {
             temperature: 0.7,
             top_p: 0.9,
             repetition_penalty: 1.1,
-            system_prompt: "You are a helpful AI assistant. Provide accurate and concise responses."
+            system_prompt: 'You are a helpful AI assistant. Provide accurate and concise responses.'
           }
         }
       );
@@ -46,7 +46,7 @@ export class LlamaService {
       return Array.isArray(output) ? output.join('') : output;
     } catch (error) {
       console.error('Llama API error:', error.message);
-      
+
       // Throw a more user-friendly error
       if (error.response?.status === 401) {
         throw new Error('Replicate authentication failed. Please check your API token.');
@@ -79,7 +79,7 @@ export class LlamaService {
             temperature: 0.7,
             top_p: 0.9,
             repetition_penalty: 1.1,
-            system_prompt: "You are a helpful AI assistant. Provide accurate and concise responses."
+            system_prompt: 'You are a helpful AI assistant. Provide accurate and concise responses.'
           }
         }
       );

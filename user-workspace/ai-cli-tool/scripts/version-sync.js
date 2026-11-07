@@ -16,7 +16,7 @@ async function syncVersions() {
     // Update version in index.js
     const indexPath = path.join(rootDir, 'src', 'index.js');
     let indexContent = await fs.readFile(indexPath, 'utf8');
-    
+
     // Replace version in .version() call
     indexContent = indexContent.replace(
       /\.version\(['"]([\d.]+)['"]\)/,

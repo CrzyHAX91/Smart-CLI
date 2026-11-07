@@ -80,11 +80,11 @@ describe('SuggestionsEngine', () => {
     test('should use cache for repeated queries', async () => {
       // First call
       await suggestionsEngine.getSuggestions(mockQuery);
-      
+
       // Reset mock to verify second call
       const llamaService = suggestionsEngine.llama;
       llamaService.generateResponse.mockClear();
-      
+
       // Second call
       await suggestionsEngine.getSuggestions(mockQuery);
 
@@ -97,7 +97,7 @@ describe('SuggestionsEngine', () => {
       llamaService.generateResponse.mockRejectedValue(new Error('API Error'));
 
       const result = await suggestionsEngine.getSuggestions(mockQuery);
-      
+
       expect(result).toEqual(expect.objectContaining({
         relatedQuestions: expect.any(Array),
         powerOptions: expect.any(Array),
@@ -136,7 +136,7 @@ describe('SuggestionsEngine', () => {
     test('should display suggestions in formatted boxes', () => {
       // Mock console.log to avoid actual output during tests
       console.log = jest.fn();
-      
+
       suggestionsEngine.displaySuggestions(mockSuggestions);
 
       expect(console.log).toHaveBeenCalledTimes(3); // One for each category

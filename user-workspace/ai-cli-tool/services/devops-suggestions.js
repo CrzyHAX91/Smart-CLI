@@ -136,7 +136,7 @@ export class DevOpsSuggestionsService {
 
   displaySuggestions(suggestions, type = 'kubernetes') {
     const title = type === 'kubernetes' ? '🎯 Kubernetes Optimization Suggestions' : '🐳 Docker Optimization Suggestions';
-    
+
     console.log(boxen(chalk.bold.cyan(title), {
       padding: 1,
       margin: 1,
@@ -147,7 +147,7 @@ export class DevOpsSuggestionsService {
     Object.entries(suggestions).forEach(([category, items]) => {
       const emoji = this._getCategoryEmoji(category);
       console.log(boxen(
-        `${chalk.bold.yellow(emoji + ' ' + category.toUpperCase())}\n\n${items.map(item => 
+        `${chalk.bold.yellow(emoji + ' ' + category.toUpperCase())}\n\n${items.map(item =>
           chalk.white('• ' + item)).join('\n')}`,
         {
           padding: 1,

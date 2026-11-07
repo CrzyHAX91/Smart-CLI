@@ -64,7 +64,7 @@ export const askQuestion = async (question, options = {}) => {
     // Get smart prompt improvement
     spinner.text = rainbow('🧠 Optimizing your question...');
     const improvedQuestion = await suggestions.getSmartPrompt(question);
-    
+
     if (improvedQuestion !== question) {
       spinner.succeed(safeChalk('green', 'Question optimized!'));
       console.log(
@@ -96,7 +96,7 @@ export const askQuestion = async (question, options = {}) => {
     );
 
     // Format the response based on source
-    const responseTitle = result.source === 'cache' 
+    const responseTitle = result.source === 'cache'
       ? `📦 Cached Response (${new Date(result.timestamp).toLocaleString()})`
       : '🎯 AI Response';
 
@@ -147,7 +147,7 @@ export const askQuestion = async (question, options = {}) => {
         '💡 AI Suggestions'
       )
     );
-    
+
     suggestions.displaySuggestions(smartSuggestions);
 
     // Show performance stats
@@ -175,7 +175,7 @@ export const askQuestion = async (question, options = {}) => {
         '❌ Error'
       )
     );
-    
+
     // Provide helpful error messages in neon box
     if (error.message.includes('API')) {
       console.log(

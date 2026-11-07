@@ -1,37 +1,27 @@
+---
 name: MS Security DevOps
-
-on:
+'on':
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   schedule:
-    - cron: '0 2 * * 1'         # Elke maandag om 02:00 UTC
-  workflow_dispatch:           # Handmatig triggerbaar
-
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
 permissions:
   contents: read
   security-events: write
-  id-token: write
-
-concurrency:
-  group: msdo-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   msdo:
     name: Microsoft Security DevOps
     runs-on: windows-latest
     timeout-minutes: 30
-
-    strategy:
-      matrix:
-        dotnet-version: [ '5.0.x', '6.0.x' ]
-        node-version:   [ '16.x' ]
-
     steps:
-      - name: Checkout code
-        uses: a
-
+      - uses: actions/checkout@v6
+      - name: Microsoft Security DevOps analysis
+        uses: microsoft/security-devops-action@v1
+        id: msdo
+      - name: Upload security results
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ${{ steps.msdo.outputs.sarifFile }}

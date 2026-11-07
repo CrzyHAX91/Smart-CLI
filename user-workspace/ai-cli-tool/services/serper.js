@@ -7,7 +7,7 @@ export class SerperService {
   constructor(config = {}) {
     this.apiKey = config.serperApiKey || process.env.SERPER_API_KEY;
     this.baseUrl = 'https://google.serper.dev/search';
-    
+
     if (!this.apiKey) {
       throw new Error('Serper API key is not configured');
     }
@@ -34,7 +34,7 @@ export class SerperService {
       }
 
       const data = await response.json();
-      
+
       // Format the search results
       const formattedResults = this.formatResults(data);
       return formattedResults;
@@ -51,7 +51,7 @@ export class SerperService {
     if (data.knowledgeGraph) {
       results.push('🎯 Knowledge Graph:');
       results.push(`${data.knowledgeGraph.title}: ${data.knowledgeGraph.description || ''}`);
-      
+
       if (data.knowledgeGraph.attributes) {
         Object.entries(data.knowledgeGraph.attributes).forEach(([key, value]) => {
           results.push(`• ${key}: ${value}`);

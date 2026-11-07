@@ -1,14 +1,12 @@
 /** @type {import('jest').Config} */
 module.exports = {
   testEnvironment: 'node',
+  setupFiles: ['<rootDir>/test-network.cjs'],
   transform: {
     '^.+\\.js$': ['babel-jest', { configFile: './babel.config.json' }]
   },
   moduleFileExtensions: ['js', 'json', 'cjs', 'mjs'],
   testMatch: ['**/__tests__/**/*.js'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(chalk|inquirer|ora|boxen|figlet|node-fetch)/)'
-  ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
   moduleDirectories: ['node_modules'],
   testTimeout: 10000,
@@ -41,4 +39,4 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/node_modules/'
   ]
-}
+};
