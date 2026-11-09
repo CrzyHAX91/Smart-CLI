@@ -30,7 +30,7 @@ pyOpenSSL==25.1.0
 
 # Testing and development
 pytest==8.4.1
-pytest-cov==6.1.1
+pytest-cov==7.1.0
 black==25.1.0
 flake8==7.2.0
 bandit==1.8.3
@@ -50,4 +50,4 @@ bandit==1.8.3
 black==25.1.0
 flake8==7.1.2
 pytest==8.4.1
-pytest-cov==6.0.0
+pytest-cov==7.1.0
